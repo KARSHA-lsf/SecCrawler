@@ -87,8 +87,12 @@ public class GetSecPage {
 
     public static void getPageByTicker(String ticker, String type, String dateb, String owner, String count) throws IOException {
 	HttpClient client = new DefaultHttpClient();
-	System.out.println("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
-	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	//System.out.println("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	//to get perticulater filing
+	//HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	//to get all filings
+	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	
 	HttpResponse response = client.execute(request);
 
 	HttpEntity entity = response.getEntity();
@@ -112,7 +116,12 @@ public class GetSecPage {
 
     public static void getPageByCompanyName(String companyName, String type, String dateb, String owner, String count) throws IOException {
 	HttpClient client = new DefaultHttpClient();
-	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=" + companyName + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	
+	//to get only perticular filing
+	//HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=" + companyName + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	//to get all filings
+	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=" + companyName + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
+	
 	HttpResponse response = client.execute(request);
 
 	HttpEntity entity = response.getEntity();
