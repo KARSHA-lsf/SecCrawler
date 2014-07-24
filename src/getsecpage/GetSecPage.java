@@ -28,7 +28,7 @@ public class GetSecPage {
      * @param args the command line arguments
      */
     public static void main(String[] args) throws IOException, ParseException {
-	String webPageDir = "data/EDGAR Search Results.html";
+	String webPageDir = "EDGAR Search Results.html";
 	String TRACEcompanyName = "";
 	String CRSPcompanyName = "";
 	String ticker = "";
@@ -36,8 +36,8 @@ public class GetSecPage {
 	Date endDate = new Date(2013 - 1900, 11, 31);//year - the year minus 1900. month - the month between 0-11. date - the day of the month between 1-31.
 
 	String datafile[] = new String[2];
-	datafile[0] = "data/Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2013.csv";
-	datafile[1] = "data/Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2012.csv";
+	datafile[0] = "Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2013.csv";
+	datafile[1] = "Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2012.csv";
 
 
 	for (int i = 0; i < datafile.length; i++) {
@@ -97,7 +97,7 @@ public class GetSecPage {
 
 	    InputStream inputStream = entity.getContent();
 
-	    String filePath = "data/EDGAR Search Results.html";
+	    String filePath = "EDGAR Search Results.html";
 	    try (FileOutputStream fos = new FileOutputStream(new File(filePath))) {
 		int inByte;
 		while ((inByte = inputStream.read()) != -1) {
@@ -121,7 +121,7 @@ public class GetSecPage {
 
 	    InputStream inputStream = entity.getContent();
 
-	    String filePath = "data/EDGAR Search Results.html";
+	    String filePath = "EDGAR Search Results.html";
 	    try (FileOutputStream fos = new FileOutputStream(new File(filePath))) {
 		int inByte;
 		while ((inByte = inputStream.read()) != -1) {
