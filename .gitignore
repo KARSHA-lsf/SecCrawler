@@ -1,6 +1,3 @@
-data/*
-dist/*
-build/*
-nbproject/*
-build.xml
-manifest.mf
+/*
+!/src/*
+!/lib/*
