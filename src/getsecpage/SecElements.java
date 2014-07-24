@@ -33,6 +33,7 @@ public class SecElements {
 	    String file_film_Number = "";
 	    String baseURL = "http://www.sec.gov";
 	    String companyName = "";
+	    String companySic = "";
 	    String CIK = "";
 	    ArrayList<Filing> fillingList = new ArrayList<Filing>();
 
@@ -40,79 +41,84 @@ public class SecElements {
 	    Document doc = Jsoup.parse(input, "UTF-8", baseURL);
 
 	    //get company name
-	    
+
 	    Elements CompanyNmElements = doc.getElementsByClass("companyName");
-	    if(!CompanyNmElements.isEmpty()){
-	    companyName = CompanyNmElements.get(0).ownText();
-	    companyName = companyName.substring(0, companyName.length() - 2).trim();//there are two extra charaters appear at end of string "#:"
-	    System.out.println(companyName);
-	   
-	    //find the CIK value
-	  
-	    Elements CIKelements = doc.getElementsByTag("input");
-	    if(!CIKelements.isEmpty()){
-	    Elements CIKelementChild = CIKelements.get(1).getElementsByAttributeValue("name", "CIK"); // 2nd index element has the value for CIK
-	    CIK = CIKelementChild.get(0).val();
-	    System.out.println(CIK);
-	    
-	    //filling data is on a table under element "seriesDiv"
-	    //if(doc.hasAttr("seriesDiv")){
-	    Element content = doc.getElementById("seriesDiv");
-	   
-	    Elements links = content.getElementsByTag("tr"); //get the table rows 
-	    for (Element link : links) {
-		if (link.hasText()) {
+	    if (!CompanyNmElements.isEmpty()) {
+		companyName = CompanyNmElements.get(0).ownText();
+		companyName = companyName.substring(0, companyName.length() - 2).trim();//there are two extra charaters appear at end of string "#:"
+		System.out.println(companyName);
 
-		    //get table elements in each row
-		    Elements sublinks = link.getElementsByTag("td");
-		    if (!sublinks.isEmpty()) {
+		//find SIC value
+		Elements CompanySicElements = doc.getElementsByClass("identInfo");
+		if (!CompanySicElements.isEmpty()) {
+		    Elements CompanySicChildElements = CompanySicElements.get(0).getElementsByTag("a");
+		    companySic = CompanySicChildElements.get(0).ownText();
+		    System.out.println(companySic);
+		    //find the CIK value
 
-			Filing newFiling = new Filing();
-			filingDate = sublinks.get(3).text(); //index 3 contain date of the filling
-			if (isDateWithinPeriod(startDate, endDate, filingDate)) {
-			    //System.out.println("-------------------\n");
-			    newFiling.setFilingType(sublinks.get(0).text());
-			    newFiling.setFilingURL(baseURL + sublinks.get(1).getElementsByTag("a").get(0).attr("href"));
-			    newFiling.setFilingDate(new SimpleDateFormat("yyyy-MM-dd").parse(filingDate.trim()));
-			    newFiling.setSECcompanyName(companyName);
-			    newFiling.setCIK(CIK);
-			    newFiling.setCRSPcompanyName(CRSPcompanyName);
-			    newFiling.setTRACEcompanyName(TRACEcompanyName);
-			    //when TICKER is not empty
-			    if(!ticker.isEmpty()){
-			    newFiling.setTICKER(ticker);
+		    Elements CIKelements = doc.getElementsByTag("input");
+		    if (!CIKelements.isEmpty()) {
+			Elements CIKelementChild = CIKelements.get(1).getElementsByAttributeValue("name", "CIK"); // 2nd index element has the value for CIK
+			CIK = CIKelementChild.get(0).val();
+			System.out.println(CIK);
+
+			//filling data is on a table under element "seriesDiv"
+			//if(doc.hasAttr("seriesDiv")){
+			Element content = doc.getElementById("seriesDiv");
+
+			Elements links = content.getElementsByTag("tr"); //get the table rows 
+			for (Element link : links) {
+			    if (link.hasText()) {
+
+				//get table elements in each row
+				Elements sublinks = link.getElementsByTag("td");
+				if (!sublinks.isEmpty()) {
+
+				    Filing newFiling = new Filing();
+				    filingDate = sublinks.get(3).text(); //index 3 contain date of the filling
+				    if (isDateWithinPeriod(startDate, endDate, filingDate)) {
+					//System.out.println("-------------------\n");
+					newFiling.setFilingType(sublinks.get(0).text());
+					newFiling.setFilingURL(baseURL + sublinks.get(1).getElementsByTag("a").get(0).attr("href"));
+					newFiling.setFilingDate(new SimpleDateFormat("yyyy-MM-dd").parse(filingDate.trim()));
+					newFiling.setSECcompanyName(companyName);
+					newFiling.setCIK(CIK);
+					newFiling.setCRSPcompanyName(CRSPcompanyName);
+					newFiling.setTRACEcompanyName(TRACEcompanyName);
+					//when TICKER is not empty
+					if (!ticker.isEmpty()) {
+					    newFiling.setTICKER(ticker);
+					} //when TICKER is empty
+					else {
+					    newFiling.setTICKER("NA");
+					}
+
+					newFiling.setFlag(isFlagTrue(CRSPcompanyName, TRACEcompanyName, companyName));
+					//filing Description
+					newFiling.setFilingDescription(sublinks.get(2).text());
+
+					//file_film_Number
+					newFiling.setFilingFileFilmNo(sublinks.get(4).text());
+					// System.out.println(filingType + "\n" + filingURL + "\n" + filingDesc + "\n" + filingDate + "\n" + file_film_Number);
+				    }
+
+				    fillingList.add(newFiling);
+				}
 			    }
-			    //when TICKER is empty
-			    else{
-			    newFiling.setTICKER("NA");
-			    }
-			    
-			    newFiling.setFlag(isFlagTrue(CRSPcompanyName, TRACEcompanyName, companyName));
-			    //filing Description
-			    newFiling.setFilingDescription(sublinks.get(2).text());
-			    
-			    //file_film_Number
-			    newFiling.setFilingFileFilmNo(sublinks.get(4).text());
-			   // System.out.println(filingType + "\n" + filingURL + "\n" + filingDesc + "\n" + filingDate + "\n" + file_film_Number);
 			}
-
-			fillingList.add(newFiling);
 		    }
-  
-	  }
-        }
-	}
-	    
-    }
+		}
+
+	    }
 	    return fillingList;
 	} catch (ParseException ex) {
 	    System.out.println("ParseException");
 	    return null;
-	   // Logger.getLogger(SecElements.class.getName()).log(Level.SEVERE, null, ex);
+	    // Logger.getLogger(SecElements.class.getName()).log(Level.SEVERE, null, ex);
 	} catch (IOException ex) {
-	     System.out.println("IOException");
-	   // Logger.getLogger(SecElements.class.getName()).log(Level.SEVERE, null, ex);
-	return null;
+	    System.out.println("IOException");
+	    // Logger.getLogger(SecElements.class.getName()).log(Level.SEVERE, null, ex);
+	    return null;
 	}
     }
 
@@ -140,28 +146,24 @@ public class SecElements {
 
 	    //TRACEcompanyName is not empty
 	    if (!TRACEcompanyName.isEmpty()) {
-		
+
 		//if TRACEcompanyName OR CRSPcompanyName is matched with SECcompany name
 		if (TRACEcompanyName.equals(companyName) || CRSPcompanyName.equals(companyName)) {
 		    status = false;
 		}
-	    }
-	    
-	    //TRACEcompanyName is empty
-	    else{
+	    } //TRACEcompanyName is empty
+	    else {
 		//if CRSPcompanyName is matched with SECcompany name
 		if (CRSPcompanyName.equals(companyName)) {
 		    status = false;
 		}
 	    }
-	}
-
-	//CRSPcompanyName is empty
-	else{
+	} //CRSPcompanyName is empty
+	else {
 	    //CRSPcompanyName is not empty and matches with SECcompany name
-	if (!TRACEcompanyName.isEmpty() && TRACEcompanyName.equals(companyName)) {
-	    status = false;	  
-	}
+	    if (!TRACEcompanyName.isEmpty() && TRACEcompanyName.equals(companyName)) {
+		status = false;
+	    }
 	}
 	return status;
     }
