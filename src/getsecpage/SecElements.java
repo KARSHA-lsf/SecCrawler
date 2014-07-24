@@ -83,6 +83,7 @@ public class SecElements {
 					newFiling.setFilingDate(new SimpleDateFormat("yyyy-MM-dd").parse(filingDate.trim()));
 					newFiling.setSECcompanyName(companyName);
 					newFiling.setCIK(CIK);
+					newFiling.setSIC(companySic);
 					newFiling.setCRSPcompanyName(CRSPcompanyName);
 					newFiling.setTRACEcompanyName(TRACEcompanyName);
 					//when TICKER is not empty
