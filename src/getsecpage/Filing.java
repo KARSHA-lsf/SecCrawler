@@ -21,6 +21,7 @@ public class Filing {
     private Date filingDate;
     private String CIK;
     private String TICKER;
+    private String SIC;
     private String filingDescription;
     private String filingFileFilmNo;
     private String SECcompanyName;
@@ -74,6 +75,14 @@ public class Filing {
 
     public void setCIK(String CIK) {
 	this.CIK = CIK;
+    }
+    
+        public String getSIC() {
+	return SIC;
+    }
+
+    public void setSIC(String SIC) {
+	this.SIC = SIC;
     }
     
     public String getTICKER() {
