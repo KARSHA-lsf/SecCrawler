@@ -23,8 +23,8 @@ public class FilingDB {
 
         //This method adds a new record to the Filing table in the database
         String query =
-                "INSERT IGNORE INTO filing (filingType, filingURL, filingDate, filingDescription, filingFileFilmNo, CIK, TICKER, SECcompanyName, TRACEcompanyName, CRSPcompanyName, flag) "
-                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                "INSERT IGNORE INTO filing (filingType, filingURL, filingDate, filingDescription, filingFileFilmNo, CIK, SIC, TICKER, SECcompanyName, TRACEcompanyName, CRSPcompanyName, flag) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
 	    int count=0;
 	    for(int i=0; i< filingList.size();i++){
@@ -37,11 +37,12 @@ public class FilingDB {
 	    ps.setString(4, filingList.get(i).getFilingDescription());
 	    ps.setString(5, filingList.get(i).getFilingFileFilmNo());
 	    ps.setString(6, filingList.get(i).getCIK());
-	    ps.setString(7, filingList.get(i).getTICKER());
-	    ps.setString(8, filingList.get(i).getSECcompanyName());
-	    ps.setString(9, filingList.get(i).getTRACEcompanyName());
-	    ps.setString(10, filingList.get(i).getCRSPcompanyName());
-	    ps.setBoolean(11, filingList.get(i).getFlag());
+	    ps.setString(7, filingList.get(i).getSIC());
+	    ps.setString(8, filingList.get(i).getTICKER());
+	    ps.setString(9, filingList.get(i).getSECcompanyName());
+	    ps.setString(10, filingList.get(i).getTRACEcompanyName());
+	    ps.setString(11, filingList.get(i).getCRSPcompanyName());
+	    ps.setBoolean(12, filingList.get(i).getFlag());
 
             ps.executeUpdate();
 		}
