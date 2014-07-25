@@ -27,6 +27,7 @@ public class FilingDB {
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
 	    int count=0;
+	    if(!filingList.isEmpty()){
 	    for(int i=0; i< filingList.size();i++){
 		if(filingList.get(i).getSECcompanyName() != null){
 		    count++;
@@ -46,6 +47,7 @@ public class FilingDB {
 
             ps.executeUpdate();
 		}
+	    }
 	    }
 	    
 	    System.out.println(count +" rows Inserted");
