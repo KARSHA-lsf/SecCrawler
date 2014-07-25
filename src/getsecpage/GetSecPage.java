@@ -32,10 +32,13 @@ public class GetSecPage {
 	String TRACEcompanyName = "";
 	String CRSPcompanyName = "";
 	String ticker = "";
+	String NAICScode = "";
 	Date startDate = new Date(2012 - 1900, 6, 1); //year - the year minus 1900. month - the month between 0-11. date - the day of the month between 1-31.
 	Date endDate = new Date(2013 - 1900, 11, 31);//year - the year minus 1900. month - the month between 0-11. date - the day of the month between 1-31.
 
 	String datafile[] = new String[2];
+	//data files has following data in the follwing order comma "," seperated
+	//TICKER, COMNAM, NAICS.x, ISSUER_NM, NAICS.y
 	datafile[0] = "Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2013.csv";
 	datafile[1] = "Select_coulms_Daily_Bonds_and_Equities_Jul_Sep_2012.csv";
 
@@ -62,10 +65,15 @@ public class GetSecPage {
 
 			ticker = stringList[0].replace("\"", "").trim();
 			CRSPcompanyName = stringList[1].replace("\"", "").trim();
-			TRACEcompanyName = stringList[2].replace("\"", "").trim();
+			TRACEcompanyName = stringList[3].replace("\"", "").trim();
+			NAICScode =  stringList[2].replace("\"", "").trim();
+			if(NAICScode.equals("NA")){
+			    NAICScode =  stringList[4].replace("\"", "").trim();
+			    
+			}
 			if (!CRSPcompanyName.equals("NA")) {
 			    getPageByCompanyName(CRSPcompanyName.replace(" ", "+"), "8-k", "20131231", "exclude", "40");
-			    ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate);
+			    ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate, NAICScode);
 			   FilingDB.insert(filingList);
 			}
 
@@ -73,10 +81,15 @@ public class GetSecPage {
 		    else if (!stringList[0].replace("\"", "").trim().equals("TICKER")) {
 			ticker = stringList[0].replace("\"", "").trim();
 			CRSPcompanyName = stringList[1].replace("\"", "").trim();
-			TRACEcompanyName = stringList[2].replace("\"", "").trim();
+			TRACEcompanyName = stringList[3].replace("\"", "").trim();
+			NAICScode =  stringList[2].replace("\"", "").trim();
+			if(NAICScode.equals("NA")){
+			    NAICScode =  stringList[4].replace("\"", "").trim();
+			    
+			}
 
 			getPageByTicker(ticker, "8-k", "20131231", "exclude", "80");
-			ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate);
+			ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate, NAICScode);
 			FilingDB.insert(filingList);
 		    }
 

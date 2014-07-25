@@ -23,11 +23,11 @@ public class FilingDB {
 
         //This method adds a new record to the Filing table in the database
         String query =
-                "INSERT IGNORE INTO filing (filingType, filingURL, filingDate, filingDescription, filingFileFilmNo, CIK, SIC, TICKER, SECcompanyName, TRACEcompanyName, CRSPcompanyName, flag) "
+                "INSERT IGNORE INTO filing (filingType, filingURL, filingDate, filingDescription, filingFileFilmNo, CIK, NAICScode, TICKER, SECcompanyName, TRACEcompanyName, CRSPcompanyName, flag) "
                 + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         try {
 	    int count=0;
-	    if(!filingList.isEmpty()){
+	    if(filingList != null){
 	    for(int i=0; i< filingList.size();i++){
 		if(filingList.get(i).getSECcompanyName() != null){
 		    count++;
@@ -38,7 +38,7 @@ public class FilingDB {
 	    ps.setString(4, filingList.get(i).getFilingDescription());
 	    ps.setString(5, filingList.get(i).getFilingFileFilmNo());
 	    ps.setString(6, filingList.get(i).getCIK());
-	    ps.setString(7, filingList.get(i).getSIC());
+	    ps.setString(7, filingList.get(i).getNAICScode());
 	    ps.setString(8, filingList.get(i).getTICKER());
 	    ps.setString(9, filingList.get(i).getSECcompanyName());
 	    ps.setString(10, filingList.get(i).getTRACEcompanyName());

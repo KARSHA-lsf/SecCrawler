@@ -24,7 +24,7 @@ import org.jsoup.select.Elements;
  */
 public class SecElements {
 
-    public static ArrayList<Filing> getFilingData(String WebPageDir, String TRACEcompanyName, String CRSPcompanyName, String ticker, Date startDate, Date endDate) {
+    public static ArrayList<Filing> getFilingData(String WebPageDir, String TRACEcompanyName, String CRSPcompanyName, String ticker, Date startDate, Date endDate, String NAICScode) {
 	try {
 	    String filingType = "";
 	    String filingURL = "";
@@ -33,7 +33,7 @@ public class SecElements {
 	    String file_film_Number = "";
 	    String baseURL = "http://www.sec.gov";
 	    String companyName = "";
-	    String companySic = "";
+	    //String companySic = "";
 	    String CIK = "";
 	    ArrayList<Filing> fillingList = new ArrayList<Filing>();
 
@@ -49,11 +49,11 @@ public class SecElements {
 		System.out.println(companyName);
 
 		//find SIC value
-		Elements CompanySicElements = doc.getElementsByClass("identInfo");
-		if (!CompanySicElements.isEmpty()) {
-		    Elements CompanySicChildElements = CompanySicElements.get(0).getElementsByTag("a");
-		    companySic = CompanySicChildElements.get(0).ownText();
-		    System.out.println(companySic);
+		//Elements CompanySicElements = doc.getElementsByClass("identInfo");
+		//if (!CompanySicElements.isEmpty()) {
+		  //  Elements CompanySicChildElements = CompanySicElements.get(0).getElementsByTag("a");
+		  //  companySic = CompanySicChildElements.get(0).ownText();
+		  //  System.out.println(companySic);
 		    //find the CIK value
 
 		    Elements CIKelements = doc.getElementsByTag("input");
@@ -83,7 +83,7 @@ public class SecElements {
 					newFiling.setFilingDate(new SimpleDateFormat("yyyy-MM-dd").parse(filingDate.trim()));
 					newFiling.setSECcompanyName(companyName);
 					newFiling.setCIK(CIK);
-					newFiling.setSIC(companySic);
+					newFiling.setNAICScode(NAICScode);
 					newFiling.setCRSPcompanyName(CRSPcompanyName);
 					newFiling.setTRACEcompanyName(TRACEcompanyName);
 					//when TICKER is not empty
@@ -108,7 +108,7 @@ public class SecElements {
 			    }
 			}
 		    }
-		}
+		//}
 
 	    }
 	    return fillingList;

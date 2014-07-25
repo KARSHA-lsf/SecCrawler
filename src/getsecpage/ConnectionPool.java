@@ -44,7 +44,7 @@ public class ConnectionPool {
 	    
 	    //read database details
 
-	    BufferedReader fileReader = new BufferedReader(new FileReader(new File("database_local_server")));
+	    BufferedReader fileReader = new BufferedReader(new FileReader(new File("database_umd_server")));
 
 	    while ((line = fileReader.readLine()) != null) {
 		if (!line.isEmpty()) {

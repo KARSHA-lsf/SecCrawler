@@ -21,7 +21,7 @@ public class Filing {
     private Date filingDate;
     private String CIK;
     private String TICKER;
-    private String SIC;
+    private String NAICScode;
     private String filingDescription;
     private String filingFileFilmNo;
     private String SECcompanyName;
@@ -77,12 +77,12 @@ public class Filing {
 	this.CIK = CIK;
     }
     
-        public String getSIC() {
-	return SIC;
+        public String getNAICScode() {
+	return NAICScode;
     }
 
-    public void setSIC(String SIC) {
-	this.SIC = SIC;
+    public void setNAICScode(String NAICScode) {
+	this.NAICScode = NAICScode;
     }
     
     public String getTICKER() {
