@@ -46,7 +46,7 @@ public class SecElements {
 	    if (!CompanyNmElements.isEmpty()) {
 		companyName = CompanyNmElements.get(0).ownText();
 		companyName = companyName.substring(0, companyName.length() - 2).trim();//there are two extra charaters appear at end of string "#:"
-		System.out.println(companyName);
+		//System.out.println(companyName);
 
 		//find SIC value
 		//Elements CompanySicElements = doc.getElementsByClass("identInfo");
@@ -60,7 +60,7 @@ public class SecElements {
 		    if (!CIKelements.isEmpty()) {
 			Elements CIKelementChild = CIKelements.get(1).getElementsByAttributeValue("name", "CIK"); // 2nd index element has the value for CIK
 			CIK = CIKelementChild.get(0).val();
-			System.out.println(CIK);
+			//System.out.println(CIK);
 
 			//filling data is on a table under element "seriesDiv"
 			//if(doc.hasAttr("seriesDiv")){

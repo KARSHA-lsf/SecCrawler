@@ -50,7 +50,7 @@ public class FilingDB {
 	    }
 	    }
 	    
-	    System.out.println(count +" rows Inserted");
+	    //System.out.println(count +" rows Inserted");
         } catch (SQLException e) {
             e.printStackTrace();
             //return 0;

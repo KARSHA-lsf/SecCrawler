@@ -50,11 +50,12 @@ public class GetSecPage {
 	    //FileWriter outFile;
 	    // FileWriter outFileCatNotFound;
 
-
+	    int counter = 0;
 	    while ((line = fileReader.readLine()) != null) {
+		counter++;
 		if (!line.isEmpty()) {
 		    String stringList[] = line.split(",");
-		   // System.out.println("$$$$$$$$$$$$$$$$$$$$\n");
+		    System.out.println("processed_line"+i+"_"+counter+"\n");
 		    //System.out.println(stringList[0].replace("\"", "").trim()); //TICKER
 		    //System.out.println(stringList[1].replace("\"", "").trim()); //COMNAM
 //		System.out.println(stringList[2].replace("\"", "").trim()); //ISSUER_NM
@@ -66,15 +67,17 @@ public class GetSecPage {
 			ticker = stringList[0].replace("\"", "").trim();
 			CRSPcompanyName = stringList[1].replace("\"", "").trim();
 			TRACEcompanyName = stringList[3].replace("\"", "").trim();
-			NAICScode =  stringList[2].replace("\"", "").trim();
-			if(NAICScode.equals("NA")){
-			    NAICScode =  stringList[4].replace("\"", "").trim();
-			    
-			}
+			NAICScode = stringList[2].replace("\"", "").trim();
+			/*
+			 * if(NAICScode.equals("NA")){ NAICScode =
+			 * stringList[4].replace("\"", "").trim();
+			 *
+			 * }
+			 */
 			if (!CRSPcompanyName.equals("NA")) {
 			    getPageByCompanyName(CRSPcompanyName.replace(" ", "+"), "8-k", "20131231", "exclude", "40");
 			    ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate, NAICScode);
-			   FilingDB.insert(filingList);
+			    FilingDB.insert(filingList);
 			}
 
 		    } //when TICKER is avaibale
@@ -82,11 +85,14 @@ public class GetSecPage {
 			ticker = stringList[0].replace("\"", "").trim();
 			CRSPcompanyName = stringList[1].replace("\"", "").trim();
 			TRACEcompanyName = stringList[3].replace("\"", "").trim();
-			NAICScode =  stringList[2].replace("\"", "").trim();
-			if(NAICScode.equals("NA")){
-			    NAICScode =  stringList[4].replace("\"", "").trim();
-			    
-			}
+			NAICScode = stringList[2].replace("\"", "").trim();
+			/*
+			 * if(NAICScode.equals("NA")){ NAICScode =
+			 * stringList[4].replace("\"", "").trim();
+			 *
+			 * }
+			 *
+			 */
 
 			getPageByTicker(ticker, "8-k", "20131231", "exclude", "80");
 			ArrayList<Filing> filingList = SecElements.getFilingData(webPageDir, TRACEcompanyName, CRSPcompanyName, ticker, startDate, endDate, NAICScode);
@@ -105,7 +111,7 @@ public class GetSecPage {
 	//HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
 	//to get all filings
 	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&Find=Search&CIK=" + ticker + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
-	
+
 	HttpResponse response = client.execute(request);
 
 	HttpEntity entity = response.getEntity();
@@ -129,12 +135,12 @@ public class GetSecPage {
 
     public static void getPageByCompanyName(String companyName, String type, String dateb, String owner, String count) throws IOException {
 	HttpClient client = new DefaultHttpClient();
-	
+
 	//to get only perticular filing
 	//HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=" + companyName + "&type=" + type + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
 	//to get all filings
 	HttpGet request = new HttpGet("http://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&company=" + companyName + "&dateb=" + dateb + "&owner=" + owner + "&count=" + count);
-	
+
 	HttpResponse response = client.execute(request);
 
 	HttpEntity entity = response.getEntity();
