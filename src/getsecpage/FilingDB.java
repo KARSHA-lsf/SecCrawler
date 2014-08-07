@@ -61,4 +61,46 @@ public class FilingDB {
         }
 
     }
+	public static ArrayList<Filing> getFiling(String filingType){
+	    ArrayList<Filing> filingList = new ArrayList<Filing>();
+	    
+	    
+	    
+        ConnectionPool pool = ConnectionPool.getInstance();
+        Connection connection = pool.getConnection();
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+
+
+        //This method adds a new record to the Filing table in the database
+        String query =
+                "SELECT filingID, filingDescription from filing where filingType = ?";
+        try {
+
+            ps = connection.prepareStatement(query);
+            ps.setString(1, filingType);
+                       rs = ps.executeQuery();
+         
+            while (rs.next()) {
+                  Filing d = new Filing();
+                d.setFilingID(Integer.parseInt(rs.getString("filingID")));
+                d.setFilingDescription(rs.getString("filingDescription"));
+               // d.setFiboDefinition(rs.getString("TermDefinition").replaceAll("[\";\',.%$]()", " ").trim());
+                filingList.add(d);
+            }
+		
+	   
+	    
+	    
+	    //System.out.println(count +" rows Inserted");
+        } catch (SQLException e) {
+            e.printStackTrace();
+            //return 0;
+        } finally {
+            DBUtil.closeResultSet(rs);
+            DBUtil.closePreparedStatement(ps);
+            pool.freeConnection(connection);
+        }
+	    return filingList;
+	}
 }

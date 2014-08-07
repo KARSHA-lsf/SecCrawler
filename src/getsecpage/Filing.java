@@ -28,6 +28,7 @@ public class Filing {
     private String TRACEcompanyName;
     private String CRSPcompanyName;
     private boolean flag = false;
+    private int filingID;
 
     public String getFilingType() {
 	return filingType;
@@ -122,5 +123,13 @@ public class Filing {
 
     public void setFlag(boolean flag) {
 	this.flag = flag;
+    }
+
+    public void setFilingID(int filingID) {
+	this.filingID= filingID;
+    }
+    
+    public int getFilingID(){
+	return filingID;
     }
 }
