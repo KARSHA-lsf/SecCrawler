@@ -40,9 +40,9 @@ public class RatingDB {
 	    
 	    while (rs.next()) {
 		Rating r = new Rating();
-		r.setRating(Integer.parseInt(rs.getString("item")));
-		r.setItem(rs.getString("description"));
-		r.setDescription(rs.getString("rating"));
+		r.setRating(Integer.parseInt(rs.getString("rating")));
+		r.setItem(rs.getString("item"));
+		r.setDescription(rs.getString("description"));
 		// d.setFiboDefinition(rs.getString("TermDefinition").replaceAll("[\";\',.%$]()", " ").trim());
 		ratingList.add(r);
 	    }

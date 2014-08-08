@@ -25,8 +25,8 @@ public class FilingRatingDB {
 
 	//This method adds a new record to the Filing table in the database
 	String query =
-		"INSERT INTO filing_ratings (filingID, item ) "
-		+ "VALUES (?, ?)";
+		"INSERT INTO filing_ratings (filingID, item, score ) "
+		+ "VALUES (?, ?, ?)";
 	try {
 	    int count = 0;
 	    if (filingRatingList != null) {
@@ -36,6 +36,7 @@ public class FilingRatingDB {
 			ps = connection.prepareStatement(query);
 			ps.setInt(1, filingRatingList.get(i).getFilingID());
 			ps.setString(2, filingRatingList.get(i).getItem());
+			ps.setInt(3, filingRatingList.get(i).getScore());
 			
 			ps.executeUpdate();
 		    

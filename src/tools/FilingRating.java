@@ -11,6 +11,7 @@ package tools;
 public class FilingRating {
        private String item;
        private int filingID;
+       private int score;
 
     public int getFilingID() {
 	return filingID;
@@ -25,6 +26,14 @@ public class FilingRating {
 
     public void setItem(String item) {
 	this.item = item;
+    }
+    
+        public int getScore() {
+	return score;
+    }
+
+    public void setScore(int score) {
+	this.score = score;
     }
     
 }
