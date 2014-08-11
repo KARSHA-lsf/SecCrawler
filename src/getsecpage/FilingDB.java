@@ -7,6 +7,7 @@ package getsecpage;
 import java.sql.*;
 import java.util.ArrayList;
 import getsecpage.Filing;
+import java.util.HashMap;
 
 /**
  *
@@ -105,4 +106,97 @@ public class FilingDB {
 	}
 	return filingList;
     }
+    
+        public static ArrayList<Filing> getFilingDates(String filingType) {
+	ArrayList<Filing> filingList = new ArrayList<Filing>();
+	
+	
+	
+	ConnectionPool pool = ConnectionPool.getInstance();
+	Connection connection = pool.getConnection();
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+
+
+	//This method adds a new record to the Filing table in the database
+	String query =
+		"SELECT filingDate  from filing where filingType LIKE ? AND group by filingDate" ;
+	try {
+	    
+	    ps = connection.prepareStatement(query);
+	    ps.setString(1, filingType);
+	    rs = ps.executeQuery();
+	    
+	    while (rs.next()) {
+		Filing d = new Filing();
+		//d.setFilingID(Integer.parseInt(rs.getString("filingID")));
+		d.setFilingDate(rs.getDate("filingDescription"));
+		// d.setFiboDefinition(rs.getString("TermDefinition").replaceAll("[\";\',.%$]()", " ").trim());
+		filingList.add(d);
+	    }
+
+
+
+
+	    //System.out.println(count +" rows Inserted");
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    //return 0;
+	} finally {
+	    DBUtil.closeResultSet(rs);
+	    DBUtil.closePreparedStatement(ps);
+	    pool.freeConnection(connection);
+	}
+	return filingList;
+    }
+	
+	    public static HashMap<String, ArrayList<Integer>> getFilingRatingJoin() {
+	
+	
+	HashMap<String, ArrayList<Integer>> filingRatingMap= new HashMap<String, ArrayList<Integer>>();
+	
+	ConnectionPool pool = ConnectionPool.getInstance();
+	Connection connection = pool.getConnection();
+	PreparedStatement ps = null;
+	ResultSet rs = null;
+
+
+	//This method adds a new record to the Filing table in the database
+	String query =
+		"SELECT  `filingDate` ,  `filing_ratings`.`filingID` ,  `score` FROM  `filing` JOIN  `filing_ratings` ON  `filing_ratings`.`filingID` = filing.`filingID`";
+	try {
+	    
+	    ps = connection.prepareStatement(query);
+	    //ps.setString(1, filingType);
+	    rs = ps.executeQuery();
+	    
+	    while (rs.next()) {
+		String date= rs.getString("filingDate");
+		if(filingRatingMap.containsKey(date)){
+		    filingRatingMap.get(date).add(rs.getInt("score"));
+		}
+		else{
+		    ArrayList<Integer> newList = new  ArrayList<>();
+		    newList.add(rs.getInt("score"));
+		    filingRatingMap.put(date, newList);
+		}
+				
+	    }
+
+
+
+
+	    //System.out.println(count +" rows Inserted");
+	} catch (SQLException e) {
+	    e.printStackTrace();
+	    //return 0;
+	} finally {
+	    DBUtil.closeResultSet(rs);
+	    DBUtil.closePreparedStatement(ps);
+	    pool.freeConnection(connection);
+	}
+	return filingRatingMap;
+    }
 }
+
+
